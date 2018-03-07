@@ -1,5 +1,5 @@
-# typescript-package-starter
+# puppeteer tools core
 
-A simple starter for TypeScript packages, easy to be published via npm.
+input a src
 
-Scripts can be found in package.json scripts.
+analysis html 
