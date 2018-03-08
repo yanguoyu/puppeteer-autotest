@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-tools-core",
-  "version": "0.1.5",
+  "version": "0.1.8",
   "description": "Package description here",
   "main": "lib/index.js",
   "types": "./types/index.d.ts",
