@@ -2,12 +2,9 @@ import { launch , Browser, Page } from 'puppeteer';
 /**
  * tool基类，具有初始化功能，打开网页。
  * 
- * @class PuppeteerToolsBase
+ * @class browserBase
  */
-class PuppeteerToolsBase {
-
-  constructor(){
-  }
+class BrowserBase {
 
   page: Page;
 
@@ -21,7 +18,7 @@ class PuppeteerToolsBase {
     this.page = await this.browser.newPage();
   }
 
-  async analysisPage(url: String){
+  protected async openPage(url: String){
     if(!this.page){
       await this.init();
     }
@@ -36,4 +33,4 @@ class PuppeteerToolsBase {
 
 }
 
-export default PuppeteerToolsBase;
+export default BrowserBase;

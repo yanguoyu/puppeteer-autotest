@@ -1,6 +1,6 @@
-import PuppeteerToolsBase from './puppeteerToolsBase';
+import BrowserBase from './browserBase';
 
-class PageShot extends PuppeteerToolsBase{
+class PageShot extends BrowserBase{
 
   async pageShot(options){
     await this.init();

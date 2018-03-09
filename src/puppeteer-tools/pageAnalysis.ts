@@ -1,18 +1,15 @@
 import { Page } from 'puppeteer';
+import BrowserBase from './browserBase';
 
-class PageAnalysis {
+class PageAnalysis extends  BrowserBase{
 
-  constructor(page: Page){
-    this.page = page;
+  async main(url: String){
+    await this.openPage(url);
+    const bodyHandle = await this.page.$('body');
+    const html = await this.page.evaluate(body => body.innerHTML, bodyHandle);
+    return html;
   }
 
-  page: Page;
-
-  async main(){
-    return this.page.$eval('body', (element)=>{
-      return element;
-    })
-  }
 }
 
 export default PageAnalysis;
