@@ -14,7 +14,7 @@ export default class ElementModel{
       if(!this.attributes){
         this.attributes = new Map<String, String>();
       }
-      this.attributes.set(name, value);
+      this.attributes.set(name, value || true);
     }
   }
   
@@ -40,7 +40,7 @@ export default class ElementModel{
 
   childrens?: Array<ElementModel>;
 
-  attributes?: Map<String, String>;
+  attributes?: Map<String, any>;
 
   content?: String;
 };
