@@ -8,6 +8,16 @@ const html = "<body id = '1' class='1c'>" +
     "<span id='1000' class='1000c'>1-10-100-1000 span</span>"+ 
     "<span id='1001' class='1001c'>1-10-100-1001 span</span>"+ 
     "<span id='1002' class='1002c'>1-10-100-1002 span</span>"+ 
+    "<span id='1003' class='1003c'>1-10-100-1003 span</span>"+ 
+    "<span id='1004' class='1004c'>1-10-100-1004 span</span>"+ 
+    "<span id='1005' class='1005c'>1-10-100-1005 span</span>"+ 
+    "<span id='1006' class='1006c'>1-10-100-1006 span</span>"+ 
+    "<span id='1007' class='1007c'>1-10-100-1007 span</span>"+ 
+    "<span id='1008' class='1008c'>1-10-100-1008 span</span>"+ 
+    "<span id='1009' class='1009c'>1-10-100-1009 span</span>"+ 
+    "<span id='1010' class='1010c'>1-10-100-1010 span</span>"+ 
+    "<span id='1011' class='1011'>1-10-100-1011 span</span>"+ 
+    "<span id='1012' class='1012c'>1-10-100-1012 span</span>"+ 
   "</div>"+ 
   "<div id='101'><span id='1010'></span></div>"+
 "</div>"+ 
@@ -18,21 +28,21 @@ let res;
 
 beforeAll(()=>{
   res = elementAnalysis.main(html);
-  console.log(res);
+  res = res[0];
 })
 
 describe("test class ElementAnalysis", ()=>{
 
   test('test basic', () => {
-    const bodyEle = res.get(1);
-    expect(bodyEle).not.toBeNull();
-    expect(bodyEle.type).toBe(ElementTypes.body);
-    expect(bodyEle.className).toBe('1c');
-    expect(bodyEle.id).toBe('1');
+    const rootElm = res;
+    expect(rootElm).not.toBeNull();
+    expect(rootElm.type).toBe(ElementTypes.body);
+    expect(rootElm.className).toBe('1c');
+    expect(rootElm.id).toBe('1');
   });
 
   test('test brother node', () => {
-    const firstDiv = res.get(10)
+    const firstDiv = res.childrens[0];
     expect(firstDiv).not.toBeNull();
     expect(firstDiv.type).toBe(ElementTypes.div);
     expect(firstDiv.className).toBe('10c');
@@ -41,7 +51,7 @@ describe("test class ElementAnalysis", ()=>{
   });
 
   test('test brother node', () => {
-    const firstDiv = res.get(11)
+    const firstDiv = res.childrens[1];
     expect(firstDiv).not.toBeNull();
     expect(firstDiv.type).toBe(ElementTypes.div);
     expect(firstDiv.className).toBe('11c');
@@ -49,16 +59,16 @@ describe("test class ElementAnalysis", ()=>{
     expect(firstDiv.content).toBe('1-11 div');
   });
 
-  test('test brother node', () => {
-    const brotherEle = res.get(1002)
-    expect(brotherEle).not.toBeNull();
-    expect(brotherEle.className).toBe('1002c');
-    expect(brotherEle.id).toBe('1002');
-    expect(brotherEle.content).toBe('1-10-100-1002 span');
+  test('test child length', () => {
+    const child = res.childrens[0] && res.childrens[0].childrens;
+    expect(child).not.toBeNull();
+    expect(child.length).toBe(2);
+    const childChild = child[0].childrens;
+    expect(childChild.length).toBe(13);
   });
 
   test('test no match node', () => {
-    const noMatchEle = res.get(12);
+    const noMatchEle = res.childrens[2];
     expect(noMatchEle).not.toBeNull();
     expect(noMatchEle.type).toBe('li');
     expect(noMatchEle.className).toBe('12c');
@@ -66,32 +76,8 @@ describe("test class ElementAnalysis", ()=>{
     expect(noMatchEle.content).toBe('12 li');
   });
 
-  test('test child node', () => {
-    const childEle = res.get(100);
-    expect(childEle).not.toBeNull();
-    expect(childEle.type).toBe(ElementTypes.div);
-    expect(childEle.className).toBe('100c');
-    expect(childEle.id).toBe('100');
-    expect(childEle.content).toBeUndefined();
-  });
-
-  test('test child child node', () => {
-    const childChildEle = res.get(1000);
-    expect(childChildEle).not.toBeNull();
-    expect(childChildEle.type).toBe(ElementTypes.span);
-    expect(childChildEle.className).toBe('1000c');
-    expect(childChildEle.id).toBe('1000');
-    expect(childChildEle.content).toBe('1-10-100-1000 span');
-  });
-
-  test('test child brother node', () => {
-    const childChildEle = res.get(120);
-    expect(childChildEle).not.toBeNull();
-    expect(childChildEle.content).toBe('120');
-  });
-
   test('test other attribute', ()=>{
-    const testAttEle = res.get(110);
+    const testAttEle = res.childrens[1].childrens[0];
     expect(testAttEle).not.toBeNull();
     expect(testAttEle.type).toBe(ElementTypes.span);
     expect(testAttEle.attributes.get('disabled')).toBeTruthy();

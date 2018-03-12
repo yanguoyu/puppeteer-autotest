@@ -5,6 +5,7 @@ export default class ElementModel{
 
   constructor(type: ElementTypes){
     this.type = type;
+    this.childrens = new Array<ElementModel>();
   }
 
   setAttribute(name: String, value: String){
@@ -15,6 +16,22 @@ export default class ElementModel{
         this.attributes = new Map<String, String>();
       }
       this.attributes.set(name, value || true);
+    }
+  }
+
+  addChildren(typeOrNode: any){
+    if( typeOrNode instanceof ElementModel ){
+      this.childrens.push(typeOrNode);
+      return typeOrNode;
+    }else {
+      this.childrens.push(new ElementModel(<ElementTypes>typeOrNode));
+      return this.childrens[this.childrens.length-1];
+    }
+  }
+
+  removeChildren(index: number){
+    if(this.childrens && this.childrens.length > index){
+      this.childrens.splice(index , 1);
     }
   }
   

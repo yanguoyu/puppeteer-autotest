@@ -4,7 +4,7 @@ const htmlparser = require("htmlparser2");
 
 class ElementAnalysis {
 
-  calCurLevel(curLevel: number, lastLevel: number ,enterEle: boolean){
+  private calCurLevel(curLevel: number, lastLevel: number ,enterEle: boolean){
     if(enterEle){
       if(!curLevel){
         return 1;
@@ -19,29 +19,43 @@ class ElementAnalysis {
   }
 
   main(html: String){
-    let elementMap = new Map<Number, ElementModel>();
-    let curLevel: number, lastLevel: number;
+    let rootElementModel: Array<ElementModel>, curElementNode: ElementModel , eleNodes: Array<ElementModel>;
+    rootElementModel = new Array<ElementModel>();
+    eleNodes = new Array<ElementModel>();
     var parser = new htmlparser.Parser({
       onopentag: (name, attributes)=>{
-        curLevel = this.calCurLevel(curLevel, lastLevel, true);
-        elementMap.set(curLevel ,new ElementModel(name));
-        Object.keys(attributes).map(value=>{
-          elementMap.get(curLevel).setAttribute(value, attributes[value]);
-        })
+        try {
+          if(!eleNodes.length){
+            rootElementModel.push(new ElementModel(name));
+            curElementNode = rootElementModel[rootElementModel.length - 1 ];
+            eleNodes.push(curElementNode);
+          }else {
+            curElementNode = eleNodes[eleNodes.length - 1];
+            curElementNode = curElementNode.addChildren(name);
+            eleNodes.push(curElementNode);
+          }
+          Object.keys(attributes).map(value=>{
+            curElementNode.setAttribute(value, attributes[value]);
+          })
+        } catch (error) {
+          console.log(JSON.stringify(eleNodes));
+          console.log(JSON.stringify(rootElementModel));
+          throw new Error(error);
+        }
       },
       ontext: function(text){
-        if(elementMap.has(curLevel)){
-          elementMap.get(curLevel).content = text;
+        if(curElementNode){
+          curElementNode.content = text;
         }
       },
       onclosetag: (tagname)=>{
-          lastLevel = curLevel;
-          curLevel = this.calCurLevel(curLevel, lastLevel, false);
+        eleNodes.pop();
+        curElementNode = eleNodes[eleNodes.length - 1];
       }
     }, {decodeEntities: true});
     parser.write(html);
     parser.end();
-    return elementMap;
+    return rootElementModel;
   }
 
 }
