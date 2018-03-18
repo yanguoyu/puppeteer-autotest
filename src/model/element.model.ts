@@ -1,11 +1,13 @@
 import ElementTypes from './elementTypes.model';
 import AttributeTypes from './attributeTypes.model';
+import ElementSelectKey from './elementSelectKey.model';
 
 export default class ElementModel{
 
   constructor(type: ElementTypes){
     this.type = type;
     this.childrens = new Array<ElementModel>();
+    this.elementSelectKey = new ElementSelectKey();
   }
 
   setAttribute(name: String, value: String){
@@ -34,7 +36,7 @@ export default class ElementModel{
       this.childrens.splice(index , 1);
     }
   }
-  
+
   /**
    * 标签类型
    *
@@ -60,4 +62,6 @@ export default class ElementModel{
   attributes?: Map<String, any>;
 
   content?: String;
+
+  elementSelectKey: ElementSelectKey
 };

@@ -1,0 +1,59 @@
+@startuml puppeteer-tools-core
+
+package 'puppeteer-tools-core' {
+
+  PuppeteerToolBase *- ElementModel
+  class PuppeteerToolBase {
+    constructor(url: String)
+    getEleModal(selector?: String):Array<ElementModel>
+    shotEle(selector?: String): <Promise<Buffer>>
+    clear()
+    page : Page
+    browser : Browser
+  }
+
+  class ElementSelectKey {
+    select: String
+    sameSelectIndex: number
+  }
+
+  enum EleEvent {
+    Click
+    Hover
+    Focus
+    Keydown
+    Input
+  }
+
+  ElementModel o--ElementSelectKey
+  class ElementModel {
+    id: String
+    type: ElementTypes
+    className: String
+    innerHtml: String
+    inlineStyle: String
+    childrens: ElementModel
+    attributes: Map<String, any>
+    content: String
+    elementSelectKey: ElementSelectKey
+  }
+
+  ElementOperatorModel *--EleEvent
+  ElementOperatorModel *--ElementSelectKey
+  class ElementOperatorModel{
+    slector: ElementSelectKey
+    eventType: EleEvent
+    value: any
+  }
+
+  ElementCoreFunc o--ElementOperatorModel
+  ElementCoreFunc o--ElementModel
+  class ElementCoreFunc {
+    operator(eleOpModel: ElementOperatorModel)
+    equal(elementModel1: ElementModel, elementModel2: ElementModel, attribute?: String)
+    contain(elementModel1: ElementModel, elementModel2: ElementModel, attribute?: String)
+  }
+
+}
+
+@enduml

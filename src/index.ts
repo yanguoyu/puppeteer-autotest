@@ -1,11 +1,7 @@
-import BrowserBase from './puppeteer-tools/browserBase';
-import PageShot from './puppeteer-tools/pageShot';
-import PageAnalysis from './puppeteer-tools/pageAnalysis';
-import ElementAnalysis from './htmlParser/elementAnalysis';
+import ElementAnalysis from './elementAnalysis';
+import PuppeteerTool from './puppeteerTool';
 
 export {
-  BrowserBase,
-  PageShot,
-  PageAnalysis,
+  PuppeteerTool,
   ElementAnalysis
 }

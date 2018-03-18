@@ -1,0 +1,22 @@
+@startuml 新建测试用例
+start
+:新建测试用例;
+:输入网址;
+  while (操作结束?)
+    fork
+    :选择操作节点;
+    fork again
+    :指定操作节点;
+    fork end
+    :指定操作方式;
+  end while
+fork
+:选择比较节点;
+fork again
+:指定比较节点;
+fork end
+:选择比较类型;
+:选择比较的值;
+:保存测试用例;
+stop
+@enduml

@@ -39,24 +39,30 @@ describe("test class ElementAnalysis", ()=>{
     expect(rootElm.type).toBe(ElementTypes.body);
     expect(rootElm.className).toBe('1c');
     expect(rootElm.id).toBe('1');
+    expect(rootElm.elementSelectKey.select).toBe('body');
+    expect(rootElm.elementSelectKey.sameSelectIndex).toBe(0);
   });
 
-  test('test brother node', () => {
+  test('test brother node 1', () => {
     const firstDiv = res.childrens[0];
     expect(firstDiv).not.toBeNull();
     expect(firstDiv.type).toBe(ElementTypes.div);
     expect(firstDiv.className).toBe('10c');
     expect(firstDiv.id).toBe('10');
     expect(firstDiv.content).toBeUndefined();
+    expect(firstDiv.elementSelectKey.select).toBe('body>div');
+    expect(firstDiv.elementSelectKey.sameSelectIndex).toBe(0);
   });
 
-  test('test brother node', () => {
+  test('test brother node 2', () => {
     const firstDiv = res.childrens[1];
     expect(firstDiv).not.toBeNull();
     expect(firstDiv.type).toBe(ElementTypes.div);
     expect(firstDiv.className).toBe('11c');
     expect(firstDiv.id).toBe('11');
     expect(firstDiv.content).toBe('1-11 div');
+    expect(firstDiv.elementSelectKey.select).toBe('body>div');
+    expect(firstDiv.elementSelectKey.sameSelectIndex).toBe(1);
   });
 
   test('test child length', () => {
