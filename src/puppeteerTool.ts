@@ -52,20 +52,31 @@ class puppeteerTool {
     return new ElementAnalysis().main(html, selector);
   }
 
-  async shotEle(options: any, selector? :String): Promise<Buffer>
+  async shotEle(options: any, selector? :ElementSelectKey): Promise<Buffer>
   {
     if(!this.page){
       await this.init();
     }
     if(selector){
-      const eleHandle = await this.page.$(selector.toString() || 'body');
-      return eleHandle.screenshot(options);
+      const eleHandle = await this.page.$$(selector.select);
+      if(eleHandle.length > selector.sameSelectIndex){
+        return await eleHandle[selector.sameSelectIndex].screenshot(options);
+      }
+      return null;
     }else{
-      this.page.screenshot(options);
+      return await this.page.screenshot(options);
     }
   }
 
-  clickSelector = async (eleOperatorModel: EleOperatorModel) => {
+  async operator(eleOperatorModel: EleOperatorModel, selector?: String): Promise<Array<ElementModel>>
+  {
+    if(this.eventFunMap.has(eleOperatorModel.eventType)){
+      await this.eventFunMap.get(eleOperatorModel.eventType)(eleOperatorModel);
+    }
+    return this.getEleModal(selector);
+  }
+
+  private clickSelector = async (eleOperatorModel: EleOperatorModel) => {
     if(eleOperatorModel.selector.sameSelectIndex){
       const eleHandles = await this.page.$$(eleOperatorModel.selector.select);
       await eleHandles[eleOperatorModel.selector.sameSelectIndex].click(eleOperatorModel.value);
@@ -74,7 +85,7 @@ class puppeteerTool {
     }
   }
 
-  hoverSelector = async (eleOperatorModel: EleOperatorModel) => {
+  private hoverSelector = async (eleOperatorModel: EleOperatorModel) => {
     if(eleOperatorModel.selector.sameSelectIndex){
       const eleHandles = await this.page.$$(eleOperatorModel.selector.select);
       await eleHandles[eleOperatorModel.selector.sameSelectIndex].hover();
@@ -83,22 +94,13 @@ class puppeteerTool {
     }
   }
 
-  focusSelector = async (eleOperatorModel: EleOperatorModel) => {
+  private focusSelector = async (eleOperatorModel: EleOperatorModel) => {
     if(eleOperatorModel.selector.sameSelectIndex){
       const eleHandles = await this.page.$$(eleOperatorModel.selector.select);
       await eleHandles[eleOperatorModel.selector.sameSelectIndex].focus();
     }else{
       await this.page.focus(eleOperatorModel.selector.select);
     }
-  }
-
-
-  async operator(eleOperatorModel: EleOperatorModel, selector?: String): Promise<Array<ElementModel>>
-  {
-    if(this.eventFunMap.has(eleOperatorModel.eventType)){
-      await this.eventFunMap.get(eleOperatorModel.eventType)(eleOperatorModel);
-    }
-    return this.getEleModal(selector);
   }
 
 }

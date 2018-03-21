@@ -56,4 +56,9 @@ describe('test puppeteerTool', ()=>{
             expect(htmlModal1[0].className).toBe('bg s_ipt_wr quickdelete-wrap ipthover iptfocus');
       })
 
+      test('test shotEle', async ()=>{
+            await puppeteerTool.shotEle({path: '1.png'})
+            const htmlModal = await puppeteerTool.getEleModal('#kw');
+            await puppeteerTool.shotEle({path: '2.png'}, htmlModal[0].elementSelectKey)
+      })
 })
