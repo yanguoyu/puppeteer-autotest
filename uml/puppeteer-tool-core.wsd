@@ -3,10 +3,12 @@
 package 'puppeteer-tools-core' {
 
   PuppeteerToolBase *- ElementModel
+  PuppeteerToolBase o--ElementOperatorModel
   class PuppeteerToolBase {
     constructor(url: String)
     getEleModal(selector?: String):Array<ElementModel>
     shotEle(selector?: String): <Promise<Buffer>>
+    operator(eleOpModel: ElementOperatorModel)
     clear()
     page : Page
     browser : Browser
@@ -46,10 +48,8 @@ package 'puppeteer-tools-core' {
     value: any
   }
 
-  ElementCoreFunc o--ElementOperatorModel
-  ElementCoreFunc o--ElementModel
-  class ElementCoreFunc {
-    operator(eleOpModel: ElementOperatorModel)
+  ElementCompareFunc o--ElementModel
+  class ElementCompareFunc {
     equal(elementModel1: ElementModel, elementModel2: ElementModel, attribute?: String)
     contain(elementModel1: ElementModel, elementModel2: ElementModel, attribute?: String)
   }

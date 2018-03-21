@@ -1,7 +1,7 @@
 export default class ElementSelectKey {
 
-  select: String;
+  select: string;
 
-  sameSelectIndex: Number;
-  
+  sameSelectIndex: number;
+
 }

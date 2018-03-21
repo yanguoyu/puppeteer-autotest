@@ -14,6 +14,7 @@ class ElementAnalysis {
   private eleNodes: Array<ElementModel>;
   private eleNodeSelect: String;
   private selectKeyMap: Map<String, Number>;
+  private preSelector: String;
 
   private onOpenTag = (name, attributes) => {
     try {
@@ -21,10 +22,10 @@ class ElementAnalysis {
       this.updateCurSelect(true, name);
       let curSelectIndex = 0;
       if(this.selectKeyMap.has(this.eleNodeSelect)){
-        curSelectIndex++;
+        curSelectIndex = <number>this.selectKeyMap.get(this.eleNodeSelect) + 1;
       }
       this.selectKeyMap.set(this.eleNodeSelect, curSelectIndex);
-      newEle.elementSelectKey.select = this.eleNodeSelect;
+      newEle.elementSelectKey.select = this.eleNodeSelect.toString();
       newEle.elementSelectKey.sameSelectIndex = curSelectIndex;
       if (this.curElementNode) {
         this.curElementNode.addChildren(newEle);
@@ -66,19 +67,22 @@ class ElementAnalysis {
   private updateCurSelect(addOrMove: boolean, curType?: String){
     if(addOrMove){
       if(!this.eleNodeSelect){
-        this.eleNodeSelect = curType;
+        this.eleNodeSelect = this.preSelector || curType;
       }else {
         this.eleNodeSelect += ('>' + curType);
       }
-    }else{
+    }else if(this.eleNodeSelect){
       const lastIndex = this.eleNodeSelect.lastIndexOf('>');
       if(lastIndex !== -1){
         this.eleNodeSelect = this.eleNodeSelect.substr(0, lastIndex);
+      }else{
+        this.eleNodeSelect = null;
       }
     }
   }
 
-  main(html: String): Array<ElementModel> {
+  main(html: String, preSelector?: String): Array<ElementModel> {
+    this.preSelector = preSelector;
     const parser = new htmlparser.Parser(
       {
         onopentag: this.onOpenTag,
