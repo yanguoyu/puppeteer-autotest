@@ -68,10 +68,13 @@ class puppeteerTool {
     }
   }
 
-  async operator(eleOperatorModel: EleOperatorModel, selector?: String): Promise<Array<ElementModel>>
+  async operator(eleOperatorModel: EleOperatorModel, selector: String = null, regetEle: boolean = false): Promise<Array<ElementModel>>
   {
     if(this.eventFunMap.has(eleOperatorModel.eventType)){
       await this.eventFunMap.get(eleOperatorModel.eventType)(eleOperatorModel);
+    }
+    if(regetEle === false && selector === null ){
+      return;
     }
     return this.getEleModal(selector);
   }

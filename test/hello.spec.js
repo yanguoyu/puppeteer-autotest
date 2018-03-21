@@ -31,6 +31,7 @@ describe('test puppeteerTool', ()=>{
                   eventType: 'Click'
             }
             const htmlModal1 = await puppeteerTool.operator(eleOperatorModel, '.bdpfmenu');
+            expect(htmlModal).toBeDefined();
             expect(htmlModal1[0].className).toBe('bdpfmenu');
       })
 
@@ -42,6 +43,7 @@ describe('test puppeteerTool', ()=>{
                   eventType: 'Hover'
             }
             const htmlModal1 = await puppeteerTool.operator(eleOperatorModel, '.s_ipt_wr');
+            expect(htmlModal).toBeDefined();
             expect(htmlModal1[0].className).toBe('bg s_ipt_wr quickdelete-wrap ipthover');
       })
 
@@ -53,12 +55,18 @@ describe('test puppeteerTool', ()=>{
                   eventType: 'Focus'
             }
             const htmlModal1 = await puppeteerTool.operator(eleOperatorModel, '.s_ipt_wr');
+            expect(htmlModal).toBeDefined();
             expect(htmlModal1[0].className).toBe('bg s_ipt_wr quickdelete-wrap ipthover iptfocus');
       })
 
       test('test shotEle', async ()=>{
             await puppeteerTool.shotEle({path: '1.png'})
-            const htmlModal = await puppeteerTool.getEleModal('#kw');
-            await puppeteerTool.shotEle({path: '2.png'}, htmlModal[0].elementSelectKey)
+            const htmlModal = await puppeteerTool.getEleModal('.mnav');
+            const eleOperatorModel = {
+                  selector: htmlModal[1].elementSelectKey,
+                  eventType: 'Hover'
+            }
+            await puppeteerTool.operator(eleOperatorModel);
+            await puppeteerTool.shotEle({path: '2.png'}, htmlModal[1].elementSelectKey)
       })
 })
