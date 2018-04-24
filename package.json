@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-tools-core",
-  "version": "0.1.9",
+  "version": "0.2.1",
   "description": "Package description here",
   "main": "lib/index.js",
   "types": "./types/index.d.ts",
@@ -33,6 +33,7 @@
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
+    "blink-diff": "^1.0.13",
     "htmlparser2": "^3.9.2",
     "jest": "^22.4.2",
     "lodash": "^4.17.2",
