@@ -1,20 +1,23 @@
 import { PuppeteerTool } from '../js'
+import BlinkDiff from "blink-diff";
 
 
 var puppeteerTool;
+var puppeteerToolInput;
 
 beforeAll(()=>{
+      puppeteerToolInput = new PuppeteerTool('https://github.com/login');
       puppeteerTool = new PuppeteerTool('http://www.baidu.com');
 })
 
 afterAll(()=>{
+      puppeteerToolInput.clearAll();
       puppeteerTool.clearAll();
 })
 
 describe('test puppeteerTool', ()=>{
       test('test deault query', async ()=>{
             const htmlModal = await puppeteerTool.getEleModal();
-            // console.log(JSON.stringify(htmlModal));
             expect(htmlModal.length).toBe(1);
       })
 
@@ -69,4 +72,58 @@ describe('test puppeteerTool', ()=>{
             await puppeteerTool.operator(eleOperatorModel);
             await puppeteerTool.shotEle({path: '2.png'}, htmlModal[1].elementSelectKey)
       })
+
+      test('test input', async ()=>{
+            jest.setTimeout(10000);
+            const eleOperatorModel = [
+                  {
+                        "selector": {
+                              "select": ".auth-form-body>input",
+                              "sameSelectIndex": 0
+                        },
+                        "eventType": "Input",
+                        "value": "841185308@qq.com"
+                  },
+                  {
+                        "selector": {
+                              "select": ".auth-form-body>input",
+                              "sameSelectIndex": 1
+                        },
+                        "eventType": "Input",
+                        "value": "149162ygy"
+                  },
+                        {
+                        "selector": {
+                              "select": ".auth-form-body>input",
+                              "sameSelectIndex": 2
+                        },
+                        "eventType": "Click",
+                        waitForNavigation: true
+                  }
+            ]
+            for(let i = 0; i <  eleOperatorModel.length; ++i){
+                  await puppeteerToolInput.operator( eleOperatorModel[i]);
+            }
+            await puppeteerToolInput.shotEle({path: '4.png'})
+      })
+
+      // test('test BlinkDiff', ()=>{
+      //       var diff = new BlinkDiff({
+      //             imageAPath: '/Users/mac/Documents/GitHub/puppeteer-autotest/1/2.png', // Use file-path
+      //             imageBPath: '/Users/mac/Documents/GitHub/puppeteer-autotest/2/2.png',
+      //             thresholdType: BlinkDiff.THRESHOLD_PIXEL,
+              
+      //             threshold: 0.01, // 1% threshold
+              
+      //             imageOutputPath: '/Users/mac/Documents/GitHub/puppeteer-autotest/1/tmp.png',
+      //             imageOutputLimit: BlinkDiff.OUTPUT_SIMILAR,
+      //             delta: 0
+      //         });
+              
+      //         return diff.runWithPromise().then(value=>{
+      //               console.log(value);
+      //         }).catch(error=>{
+      //               console.log(error);
+      //         })
+      // })
 })

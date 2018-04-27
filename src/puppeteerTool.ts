@@ -4,6 +4,7 @@ import EleOperatorModel from './model/elementOperator.model';
 import EleEventTypes from './model/eleEventTypes.model';
 import ElementSelectKey from './model/elementSelectKey.model';
 import ElementAnalysis from './elementAnalysis';
+import { NavigationOptions } from 'puppeteer';
 /**
  * 
  * @class browserBase
@@ -84,6 +85,24 @@ class puppeteerTool {
   }
 
   private clickSelector = async (eleOperatorModel: EleOperatorModel) => {
+    if(eleOperatorModel.waitForNavigation){
+      const waitOptions: NavigationOptions = {
+        waitUntil: 'domcontentloaded'
+      };
+      if(eleOperatorModel.selector.sameSelectIndex){
+        const eleHandles = await this.page.$$(eleOperatorModel.selector.select);
+        await Promise.all([
+          this.page.waitForNavigation(waitOptions),
+          eleHandles[eleOperatorModel.selector.sameSelectIndex].click(eleOperatorModel.value)
+        ])
+      }else{
+        await Promise.all([
+          this.page.waitForNavigation(waitOptions),
+          this.page.click(eleOperatorModel.selector.select, eleOperatorModel.value)
+        ])
+      }
+      return;
+    }
     if(eleOperatorModel.selector.sameSelectIndex){
       const eleHandles = await this.page.$$(eleOperatorModel.selector.select);
       await eleHandles[eleOperatorModel.selector.sameSelectIndex].click(eleOperatorModel.value);

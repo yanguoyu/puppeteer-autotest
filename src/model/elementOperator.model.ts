@@ -8,4 +8,6 @@ export default class EleOperatorModel {
   eventType: EleEventTypes;
 
   value: any;
+
+  waitForNavigation: boolean;
 }
