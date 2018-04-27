@@ -31,9 +31,14 @@ export default class ElementModel{
     }
   }
 
-  removeChildren(index: number){
-    if(this.childrens && this.childrens.length > index){
-      this.childrens.splice(index , 1);
+  removeChildren(index?: number){
+    if(this.childrens){
+      if(!index){
+        this.childrens.pop();
+      }
+      else if(this.childrens.length > index){
+        this.childrens.splice(index , 1);
+      }
     }
   }
 

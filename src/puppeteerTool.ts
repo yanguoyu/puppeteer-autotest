@@ -15,6 +15,7 @@ class puppeteerTool {
     this.eventFunMap.set(EleEventTypes.Click, this.clickSelector);
     this.eventFunMap.set(EleEventTypes.Hover, this.hoverSelector);
     this.eventFunMap.set(EleEventTypes.Focus, this.focusSelector);
+    this.eventFunMap.set(EleEventTypes.Input, this.inputSelector);
   }
 
   page: Page;
@@ -70,6 +71,9 @@ class puppeteerTool {
 
   async operator(eleOperatorModel: EleOperatorModel, selector: String = null, regetEle: boolean = false): Promise<Array<ElementModel>>
   {
+    if(!this.page){
+      await this.init();
+    }
     if(this.eventFunMap.has(eleOperatorModel.eventType)){
       await this.eventFunMap.get(eleOperatorModel.eventType)(eleOperatorModel);
     }
@@ -103,6 +107,15 @@ class puppeteerTool {
       await eleHandles[eleOperatorModel.selector.sameSelectIndex].focus();
     }else{
       await this.page.focus(eleOperatorModel.selector.select);
+    }
+  }
+
+  private inputSelector = async (eleOperatorModel: EleOperatorModel) => {
+    if(eleOperatorModel.selector.sameSelectIndex){
+      const eleHandles = await this.page.$$(eleOperatorModel.selector.select);
+      await eleHandles[eleOperatorModel.selector.sameSelectIndex].type(eleOperatorModel.value);
+    }else{
+      await this.page.type(eleOperatorModel.selector.select, eleOperatorModel.value);
     }
   }
 
