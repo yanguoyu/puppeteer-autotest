@@ -39,19 +39,25 @@ class puppeteerTool {
     }
   }
 
-  async getEleModal(selector?: String):Promise<Array<ElementModel>>
+  async getEleModal(selector? :ElementSelectKey):Promise<Array<ElementModel>>
   {
     if(!this.page){
       await this.init();
     }
-    selector = selector||'body';
-    const eleHandle = await this.page.$$(selector.toString());
+    selector = selector || {
+      select: 'body',
+      sameSelectIndex: null
+    }
+    let eleHandle = await this.page.$$(selector.select.toString());
+    if(selector.sameSelectIndex !== null && selector.sameSelectIndex !== undefined){
+      eleHandle = [eleHandle[selector.sameSelectIndex]]
+    }
     let html = '';
     const eleHandleLength = eleHandle.length;
     for(let index = 0; index < eleHandleLength; ++index){
       html += await this.page.evaluate(body => body.outerHTML, eleHandle[index]);
     }
-    return new ElementAnalysis().main(html, selector);
+    return new ElementAnalysis().main(html, selector.select);
   }
 
   async shotEle(options: any, selector? :ElementSelectKey): Promise<Buffer>
@@ -70,7 +76,7 @@ class puppeteerTool {
     }
   }
 
-  async operator(eleOperatorModel: EleOperatorModel, selector: String = null, regetEle: boolean = false): Promise<Array<ElementModel>>
+  async operator(eleOperatorModel: EleOperatorModel, selector: ElementSelectKey = null, regetEle: boolean = false): Promise<Array<ElementModel>>
   {
     if(!this.page){
       await this.init();
