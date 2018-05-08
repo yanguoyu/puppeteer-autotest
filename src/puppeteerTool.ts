@@ -65,7 +65,7 @@ class puppeteerTool {
     if(!this.page){
       await this.init();
     }
-    if(selector){
+    if(selector && selector.select){
       const eleHandle = await this.page.$$(selector.select);
       if(eleHandle.length > selector.sameSelectIndex){
         return await eleHandle[selector.sameSelectIndex].screenshot(options);
