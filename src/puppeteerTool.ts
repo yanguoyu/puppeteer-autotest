@@ -28,7 +28,7 @@ class puppeteerTool {
   eventFunMap = new Map<EleEventTypes, Function>();
 
   private async init(){
-    this.browser = await launch();
+    this.browser = await launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     this.page = await this.browser.newPage();
     await this.page.goto(this.url.toString(), { waitUntil : ['load', 'domcontentloaded']});
   }
