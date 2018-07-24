@@ -9,5 +9,7 @@ export default class EleOperatorModel {
 
   value: any;
 
-  waitForNavigation: boolean;
+  waitForNavigation: Boolean;
+
+  waitForRequest: Boolean;
 }
