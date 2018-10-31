@@ -15,7 +15,8 @@
     "build:es": "cross-env BABEL_ENV=es babel js --out-dir es",
     "build:umd": "cross-env BABEL_ENV=umd babel js --out-dir dist",
     "clean": "rimraf dist lib js es types",
-    "watch:lib": "npm run build:js -- --watch & npm run build:lib -- --watch"
+    "watch:lib": "npm run build:js -- --watch & npm run build:lib -- --watch",
+    "release": "npm login && npm publish"
   },
   "repository": {
     "type": "git",
