@@ -16,10 +16,10 @@ afterAll(()=>{
 })
 
 describe('test puppeteerTool', ()=>{
-      // test('test deault query', async ()=>{
-      //       const htmlModal = await puppeteerTool.getEleModal();
-      //       expect(htmlModal.length).toBe(1);
-      // })
+      test('test deault query', async ()=>{
+            const htmlModal = await puppeteerTool.getEleModal();
+            expect(htmlModal.length).toBe(1);
+      })
 
       // test('test appointed query', async ()=>{
       //       const htmlModal = await puppeteerTool.getEleModal({select: 'body>div>div>div'});

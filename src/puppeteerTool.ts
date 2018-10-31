@@ -1,4 +1,4 @@
-import { launch , Browser, Page, JSHandle } from 'puppeteer';
+import puppeteer, {  Browser, Page, JSHandle } from 'puppeteer';
 import ElementModel from './model/element.model';
 import EleOperatorModel from './model/elementOperator.model';
 import EleEventTypes from './model/eleEventTypes.model';
@@ -28,7 +28,7 @@ class puppeteerTool {
   eventFunMap = new Map<EleEventTypes, Function>();
 
   private async init(){
-    this.browser = await launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+    this.browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
     this.page = await this.browser.newPage();
     await this.page.goto(this.url.toString(), { waitUntil : ['load', 'domcontentloaded']});
   }
@@ -74,7 +74,7 @@ class puppeteerTool {
     return new ElementAnalysis().main(html, selector.select);
   }
 
-  async shotEle(options: any, selector? :ElementSelectKey): Promise<Buffer>
+  async shotEle(options: any, selector? :ElementSelectKey): Promise<any>
   {
     if(!this.page){
       await this.init();
@@ -122,6 +122,7 @@ class puppeteerTool {
       //如果有页面跳转或者reload
       if(eleOperatorModel.waitForNavigation){
         const waitOptions: NavigationOptions = {
+          timeout: 10000,
           waitUntil: 'networkidle0'
         };
         allWaitPromise.push(this.page.waitForNavigation(waitOptions));
