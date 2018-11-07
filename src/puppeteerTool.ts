@@ -139,6 +139,10 @@ class puppeteerTool {
     }
   }
 
+  async goto(url, options) {
+    await this.page.goto(url, options || { waitUntil : ['load', 'domcontentloaded']});
+  }
+
 }
 
 export default puppeteerTool;
