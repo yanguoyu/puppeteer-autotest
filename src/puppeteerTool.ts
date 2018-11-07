@@ -140,6 +140,10 @@ class puppeteerTool {
   }
 
   async goto(url, options) {
+    if(!this.page) {
+      this.browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
+      this.page = await this.browser.newPage();
+    }
     await this.page.goto(url, options || { waitUntil : ['load', 'domcontentloaded']});
   }
 
