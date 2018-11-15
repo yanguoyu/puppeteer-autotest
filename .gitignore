@@ -2,3 +2,9 @@ node_modules/
 .idea/
 .DS_Store
 *.log
+amd/
+umd/
+es/
+cjs/
+commonjs/
+systemjs/

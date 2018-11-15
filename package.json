@@ -13,7 +13,6 @@
     "test:es": "jest --config ./test/config/test.es.json",
     "test:umd": "jest --config ./test/config/test.umd.json",
     "clean": "rimraf amd && rimraf cjs && rimraf commonjs && rimraf es && rimraf systemjs && rimraf umd && rimraf dist",
-    "build:all": "npm run build && npm run build:min",
     "build": "npm run build:amd && npm run build:cjs && npm run build:commonjs && npm run build:es && npm run build:systemjs && npm run build:umd",
     "build:amd": "rimraf amd && babel src -d amd --config-file ./babel-config/amd.babelrc",
     "build:cjs": "rimraf cjs && babel src -d cjs --config-file ./babel-config/cjs.babelrc",
@@ -21,12 +20,6 @@
     "build:es": "rimraf es && babel src -d es --config-file ./babel-config/es.babelrc",
     "build:systemjs": "rimraf systemjs && babel src -d systemjs --config-file ./babel-config/systemjs.babelrc",
     "build:umd": "rimraf umd && babel src -d umd --config-file ./babel-config/umd.babelrc",
-    "build:min": "npm run build:min:amd && npm run build:min:cjs && npm run build:min:es && npm run build:min:iife && npm run build:min:umd",
-    "build:min:amd": "rimraf dist/index.amd.min.js && rollup -c ./rollup-config/rollup.config.amd.js",
-    "build:min:cjs": "rimraf dist/index.cjs.min.js && rollup -c ./rollup-config/rollup.config.cjs.js",
-    "build:min:es": "rimraf dist/index.es.min.js && rollup -c ./rollup-config/rollup.config.es.js",
-    "build:min:iife": "rimraf dist/index.iife.min.js && rollup -c ./rollup-config/rollup.config.iife.js",
-    "build:min:umd": "rimraf dist/index.umd.min.js && rollup -c ./rollup-config/rollup.config.umd.js",
     "release": "npm login && npm publish"
   },
   "keywords": [

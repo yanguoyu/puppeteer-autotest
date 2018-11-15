@@ -1,19 +1,3 @@
-### build min
-  it use rollup to build
-- npm run build:min
-  - ouput: dist/
-  - include: amd,cjs,es,iife,umd
-- amd
-  npm run build:min:amd
-- cjs
-  npm run build:min:cjs
-- es
-  npm run build:min:es
-- iife
-  npm run build:min:iife
-- umd
-  npm run build:min:umd
-
 ### build dir
   it use babel to build
 - npm run build
