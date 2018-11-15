@@ -1,0 +1,6 @@
+{
+  "globals" : {
+    "modules": "umd"
+  },
+  "rootDir": "../../test"
+}

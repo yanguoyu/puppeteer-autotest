@@ -1,0 +1,6 @@
+{
+  "globals" : {
+    "modules": "amd"
+  },
+  "rootDir": "../../test"
+}

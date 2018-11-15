@@ -3,13 +3,14 @@
     [
       "@babel/preset-env",
       {
-        "modules": "commonjs"
+        "modules": "amd"
       }
     ]
   ],
   "plugins": [
     ["@babel/plugin-transform-runtime", {
       "regenerator": true
-    }]
+    }],
+    "@babel/plugin-proposal-class-properties"
   ]
 }

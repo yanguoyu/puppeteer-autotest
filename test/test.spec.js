@@ -1,6 +1,7 @@
-import { ElementAnalysis } from '../js'
-import ElementModel from '../js/model/element.model';
-import ElementTypes from '../js/model/elementTypes.model'
+const Index = require('../amd/index').default;
+const ElementAnalysis = Index.ElementAnalysis;
+const ElementTypes = Index.ElementTypes;
+const AttributeTypes = Index.AttributeTypes;
 
 const html = "<body id = '1' class='1c'>" + 
 "<div id='10' class='10c'>"+ 
@@ -36,9 +37,9 @@ describe("test class ElementAnalysis", ()=>{
   test('test basic', () => {
     const rootElm = res;
     expect(rootElm).not.toBeNull();
-    expect(rootElm.type).toBe(ElementTypes.body);
-    expect(rootElm.className).toBe('1c');
-    expect(rootElm.id).toBe('1');
+    expect(rootElm.type).toBe(ElementTypes.BODY);
+    expect(rootElm.attributes[AttributeTypes.CLASS_NAME]).toBe('1c');
+    expect(rootElm.attributes[AttributeTypes.ID]).toBe('1');
     expect(rootElm.elementSelectKey.select).toBe('body');
     expect(rootElm.elementSelectKey.sameSelectIndex).toBe(0);
   });
@@ -46,9 +47,9 @@ describe("test class ElementAnalysis", ()=>{
   test('test brother node 1', () => {
     const firstDiv = res.childrens[0];
     expect(firstDiv).not.toBeNull();
-    expect(firstDiv.type).toBe(ElementTypes.div);
-    expect(firstDiv.className).toBe('10c');
-    expect(firstDiv.id).toBe('10');
+    expect(firstDiv.type).toBe(ElementTypes.DIV);
+    expect(firstDiv.attributes[AttributeTypes.CLASS_NAME]).toBe('10c');
+    expect(firstDiv.attributes[AttributeTypes.ID]).toBe('10');
     expect(firstDiv.content).toBeUndefined();
     expect(firstDiv.elementSelectKey.select).toBe('body>div');
     expect(firstDiv.elementSelectKey.sameSelectIndex).toBe(0);
@@ -57,9 +58,9 @@ describe("test class ElementAnalysis", ()=>{
   test('test brother node 2', () => {
     const firstDiv = res.childrens[1];
     expect(firstDiv).not.toBeNull();
-    expect(firstDiv.type).toBe(ElementTypes.div);
-    expect(firstDiv.className).toBe('11c');
-    expect(firstDiv.id).toBe('11');
+    expect(firstDiv.type).toBe(ElementTypes.DIV);
+    expect(firstDiv.attributes[AttributeTypes.CLASS_NAME]).toBe('11c');
+    expect(firstDiv.attributes[AttributeTypes.ID]).toBe('11');
     expect(firstDiv.content).toBe('1-11 div');
     expect(firstDiv.elementSelectKey.select).toBe('body>div');
     expect(firstDiv.elementSelectKey.sameSelectIndex).toBe(1);
@@ -77,18 +78,18 @@ describe("test class ElementAnalysis", ()=>{
     const noMatchEle = res.childrens[2];
     expect(noMatchEle).not.toBeNull();
     expect(noMatchEle.type).toBe('li');
-    expect(noMatchEle.className).toBe('12c');
-    expect(noMatchEle.id).toBe('12');
+    expect(noMatchEle.attributes[AttributeTypes.CLASS_NAME]).toBe('12c');
+    expect(noMatchEle.attributes[AttributeTypes.ID]).toBe('12');
     expect(noMatchEle.content).toBe('12 li');
   });
 
   test('test other attribute', ()=>{
     const testAttEle = res.childrens[1].childrens[0];
     expect(testAttEle).not.toBeNull();
-    expect(testAttEle.type).toBe(ElementTypes.span);
-    expect(testAttEle.attributes.get('disabled')).toBeTruthy();
-    expect(testAttEle.attributes.get('data-grid')).toBe('dataGrid');
-    expect(testAttEle.attributes.get('noexit')).toBeUndefined();
+    expect(testAttEle.type).toBe(ElementTypes.SPAN);
+    expect(testAttEle.attributes["disabled"]).toBe("");
+    expect(testAttEle.attributes['data-grid']).toBe('dataGrid');
+    expect(testAttEle.attributes['noexit']).toBeUndefined();
   })
   
 })

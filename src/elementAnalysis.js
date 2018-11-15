@@ -1,30 +1,27 @@
-import ElementTypes from './model/elementTypes.model';
-import ElementModel from './model/element.model';
-const htmlparser = require('htmlparser2');
+import ElementModel from './element';
+import htmlparser from 'htmlparser2';
 
-class ElementAnalysis {
+export default class ElementAnalysis {
   constructor() {
-    this.rootElementModel = new Array<ElementModel>();
-    this.eleNodes = new Array<ElementModel>();
-    this.selectKeyMap = new Map<String, Number>();
+    this.rootElementModel = []
+    this.eleNodes = []
+    this.selectKeyMap = {};
+    this.curElementNode = null;
+    this.eleNodes = [];
+    this.eleNodeSelect = undefined;
+    this.selectKeyMap = {};
+    this.preSelector = undefined;
   }
 
-  private rootElementModel: Array<ElementModel>;
-  private curElementNode: ElementModel;
-  private eleNodes: Array<ElementModel>;
-  private eleNodeSelect: String;
-  private selectKeyMap: Map<String, Number>;
-  private preSelector: String;
-
-  private onOpenTag = (name, attributes) => {
+  onOpenTag = (name, attributes) => {
     try {
       const newEle = new ElementModel(name);
       this.updateCurSelect(true, name);
       let curSelectIndex = 0;
-      if(this.selectKeyMap.has(this.eleNodeSelect)){
-        curSelectIndex = <number>this.selectKeyMap.get(this.eleNodeSelect) + 1;
+      if(this.selectKeyMap[this.eleNodeSelect] !== null && this.selectKeyMap[this.eleNodeSelect] !== undefined){
+        curSelectIndex = this.selectKeyMap[this.eleNodeSelect] + 1;
       }
-      this.selectKeyMap.set(this.eleNodeSelect, curSelectIndex);
+      this.selectKeyMap[this.eleNodeSelect] = curSelectIndex;
       newEle.elementSelectKey.select = this.eleNodeSelect.toString();
       newEle.elementSelectKey.sameSelectIndex = curSelectIndex;
       if (this.curElementNode) {
@@ -44,19 +41,19 @@ class ElementAnalysis {
     }
   };
 
-  private onText = text => {
+  onText = text => {
     if (this.curElementNode) {
       this.curElementNode.content = text;
     }
   };
 
-  private onCloseTag = tagName => {
+  onCloseTag = () => {
     this.eleNodes.pop();
     this.updateCurEle();
     this.updateCurSelect(false);
   };
 
-  private updateCurEle() {
+  updateCurEle() {
     if (this.eleNodes.length) {
       this.curElementNode = this.eleNodes[this.eleNodes.length - 1];
     } else {
@@ -64,7 +61,7 @@ class ElementAnalysis {
     }
   }
 
-  private updateCurSelect(addOrMove: boolean, curType?: String){
+  updateCurSelect(addOrMove, curType){
     if(addOrMove){
       if(!this.eleNodeSelect){
         this.eleNodeSelect = this.preSelector || curType;
@@ -81,7 +78,7 @@ class ElementAnalysis {
     }
   }
 
-  main(html: String, preSelector?: String): Array<ElementModel> {
+  main(html, preSelector) {
     this.preSelector = preSelector;
     const parser = new htmlparser.Parser(
       {
@@ -96,5 +93,3 @@ class ElementAnalysis {
     return this.rootElementModel;
   }
 }
-
-export default ElementAnalysis;
