@@ -1,6 +1,6 @@
 {
   "name": "npm-package-seed",
-  "version": "1.0.0",
+  "version": "0.4.0",
   "description": "npm package seed, package to min, lib, umd, es",
   "main": "src/index.js",
   "scripts": {
